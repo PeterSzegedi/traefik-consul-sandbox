@@ -1,0 +1,36 @@
+version: "2"
+networks:
+  dummy:
+    driver: bridge
+services:
+  consul:
+    image: hashicorp/consul
+    command: agent
+    environment:
+      CONSUL_BIND_INTERFACE: eth0
+    volumes:
+      - ./consul-server.json:/consul/config/server_config.json
+    ports:
+      - "8500:8500"
+    networks:
+      - dummy
+  traefik:
+    image: traefik
+    command: --api.insecure=true --providers.consulCatalog --providers.consulcatalog.endpoint.address=consul:8500
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - consul
+    networks:
+      - dummy
+  example: 
+    image: traefik/whoami
+    labels:
+      - "traefik.enable=true"
+    ports:
+      - 8081:80
+    networks:
+      - dummy

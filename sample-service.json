@@ -1,0 +1,29 @@
+{
+  "Node": "testnode",
+  "Address": "localhost",
+  "Service": {
+    "ID": "test",
+    "Service": "test",
+    "Tags": ["primary", "v1"],
+    "Address": "127.0.0.1",
+    "TaggedAddresses": {
+      "lan": {
+        "address": "127.0.0.1",
+        "port": 8081
+      }
+    },
+    "Port": 8081
+  },
+  "Check": {
+    "CheckID": "service:test",
+    "Name": "test health check",
+    "Notes": "Script based health check",
+    "Status": "passing",
+    "ServiceID": "test",
+    "Definition": {
+      "TCP": "localhost:8081",
+      "Interval": "5s",
+      "Timeout": "1s"    }
+  },
+  "SkipNodeUpdate": false
+}
